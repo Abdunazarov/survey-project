@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail</title>
+</head>
+<body>
+
+<h1>{{ survey.title }}</h1>
+<form action="{% url 'submit_survey' survey.id %}" method="post">
+    {% csrf_token %}
+    {% for question in survey.questions.all %}
+        <p>{{ question.text }}</p>
+        {% for answer in question.answers.all %}
+            <input type="radio" name="question{{ question.id }}" value="{{ answer.id }}">
+            <label for="question{{ question.id }}">{{ answer.text }}</label><br>
+        {% endfor %}
+    {% endfor %}
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>

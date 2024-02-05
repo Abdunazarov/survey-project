@@ -1,0 +1,27 @@
+{% load mathfilters %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+</head>
+<body>
+<h1>Survey Results: {{ survey.title }}</h1>
+<p>Total respondents: {{ total_respondents }}</p>
+
+{% for question_id, question_text, respondent_count in questions_data %}
+    <h2>{{ question_text }}</h2>
+    <p>Respondents: {{ respondent_count }} ({{ respondent_count|floatformat:2|div:total_respondents|mul:100 }}%)</p>
+    <ul>
+    {% with answers=question_answers_data|get_item:question_id %}
+        {% for answer_text, response_count in answers %}
+            <li>{{ answer_text }}: {{ response_count }} ({{ response_count|floatformat:2|div:respondent_count|mul:100 }}%)</li>
+        {% endfor %}
+    {% endwith %}
+    </ul>
+{% endfor %}
+
+</body>
+</html>
